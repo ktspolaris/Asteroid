@@ -21,7 +21,7 @@ int main() {
 	Clock clock;
 
 	Time dt;
-	Character player1(Vector2f(400.f,300.f), 10.f, 400.f, Vector2f(0.f,-1.f));
+	Character player1(Vector2f(400.f,300.f), 10.f, 400.f, Vector2f(0.f,0.f));
 	while (window.isOpen())
 	{
 		dt = clock.getElapsedTime();
@@ -37,17 +37,18 @@ int main() {
 
 		//control player1
 		if (Keyboard::isKeyPressed(Keyboard::Up)) {
-			player1.update(-dt.asSeconds());
+			player1.update(dt.asSeconds());
 			
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Down)) {
-			player1.update(dt.asSeconds());
+			player1.update(-dt.asSeconds());
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Right)) {
-			player1.rotation += 0.001;
+			player1.rotation += 5*dt.asSeconds() ;
+	
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Left)) {
-			player1.rotation += -0.001;
+			player1.rotation += -5*dt.asSeconds();
 			
 		}
 

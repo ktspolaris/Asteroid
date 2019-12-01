@@ -20,21 +20,26 @@ public:
 	Vector2f direction;
 	Vector2f position;
 	Color color = Color(255,0,0);
-	double rotation = -0.5;
+	double rotation = 0;
 	Character(Vector2f position, float radius, float speed, Vector2f direction) {
+		texture.loadFromFile("Player1.png");
 		this->direction = direction;
 		this->radius = radius;
 		this->speed = speed;
 		this->position = position;
 	};
 	void generate(RenderWindow* window) {
-
-		CircleShape ball(this->radius);
-		ball.setPosition(this->position);
-		ball.setOrigin(this->radius, this->radius);
-		ball.setFillColor(this->color);
-		ball.setRotation(rotation);
-		window->draw(ball);
+		Sprite character;
+		//CircleShape ball(this->radius);
+		character.setTexture(texture);
+		character.setPosition(this->position);
+		character.setOrigin(this->radius, this->radius);
+		//ball.setFillColor(this->color);
+		character.setRotation(rotation*180/3.1415926);
+		
+		//window->draw(ball);
+		
+		window->draw(character);
 	}
 
 	void update(float dt_ms)
