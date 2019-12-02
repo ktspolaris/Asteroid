@@ -34,7 +34,7 @@ public:
 		character.setTexture(texture);
 		character.setPosition(this->position);
 		character.setOrigin(this->radius, this->radius);
-		//ball.setFillColor(this->color);
+		
 		character.setRotation(rotation*180/3.1415926);
 		
 		//window->draw(ball);
@@ -44,10 +44,21 @@ public:
 
 	void update(float dt_ms)
 	{
-		this->direction.x = cos(this->rotation);
-		this->direction.y = sin(this->rotation);
+		
 		this->position.x += this->speed * this->direction.x * dt_ms;
 		this->position.y += this->speed * this->direction.y * dt_ms;
+		if (this->position.x < 0) {
+			this->position.x = 800.f;
+		}
+		if (this->position.y < 0) {
+			this->position.y = 600.f;
+		}
+		if (this->position.x > 800.f) {
+			this->position.x = 0.f;
+		}
+		if (this->position.y > 600.f) {
+			this->position.y = 0.f;
+		}
 	}
 };
 
