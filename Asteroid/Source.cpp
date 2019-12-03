@@ -98,6 +98,10 @@ bool checkballcollsion(Asteroid& ball1, Asteroid& ball2) {
 	if (sqrtf((ball1.position.x - ball2.position.x) * (ball1.position.x - ball2.position.x) + (ball1.position.y - ball2.position.y) * (ball1.position.y - ball2.position.y)) < (ball1.radius + ball2.radius)) {
 		return true;
 	}
+	else
+	{
+		return false;
+	}
 }
 
 Vector2f normalize(Vector2f vector) {
@@ -119,9 +123,7 @@ int main() {
 			grids.push_back(vector<Asteroid>());
 			j = j + 60;			
 		}
-
 		i = i + 80;
-
 	}
 
 	
@@ -183,7 +185,7 @@ int main() {
 		//generate bullets
 		if (Keyboard::isKeyPressed(Keyboard::Space)) {
 			
-			if (cooldown.getElapsedTime().asSeconds() > 0.5f) {
+			if (cooldown.getElapsedTime().asSeconds() > 0.1f) {
 				Bullet b(600.f);
 				b.direction = player1.direction;
 				b.position = player1.position;
@@ -210,34 +212,43 @@ int main() {
 		}
 
 		for (int i = 0; i < grids.size(); i++) {
-			for (auto j = grids[i].begin(); j != grids[i].end();) {
-				for(auto m = j + 1; m != grids[i].end();)
-				if (checkballcollsion(*j, *m)) {
-					for (int n = 0; n < 3; ++n) //create medium Asteroid
-					{
-						MediumAsteroid ma;
-						ma.position = j->position;
-						ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
-						mediumasteroids.push_back(ma);
-					}
-					j = grids[i].erase(j);
-				
-					for (int n = 0; n < 3; ++n) //create medium Asteroid
-					{
-						MediumAsteroid ma;
-						ma.position = m->position;
-						ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
-						mediumasteroids.push_back(ma);
-					}
-					m = grids[i].erase(m);
+			//for (auto j = grids[i].begin(); j != grids[i].end();) {
+			//	for(auto m = grids[i].begin() + 1; m != grids[i].end();)
+			//	if (checkballcollsion((*j), (*m))) {
+			//		for (int n = 0; n < 3; ++n) //create medium Asteroid
+			//		{
+			//			MediumAsteroid ma;
+			//			ma.position = (*j).position;
+			//			ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
+			//			mediumasteroids.push_back(ma);
+			//		}
+			//		j = grids[i].erase(j);
+			//	
+			//		for (int n = 0; n < 3; ++n) //create medium Asteroid
+			//		{
+			//			MediumAsteroid ma;
+			//			ma.position = (*m).position;
+			//			ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
+			//			mediumasteroids.push_back(ma);
+			//		}
+			//		m = grids[i].erase(m);
+			//		
+			//	}
 
-				}
+			//	else {
+			//		m++;
+			//	}
+			//	j++;
+			//	
+			//}
 
-				else {
-					m++;
+			for (int j = 0; j < grids[i].size(); j++) {
+				for (int m = j + 1; m < grids[i].size(); m++) {
+					if (checkballcollsion(grids[i][j],grids[i][m])) {
+						grids[i][j].active = false;
+						grids[i][m].active = false;
+					}
 				}
-				j++;
-				
 			}
 		}
 
@@ -255,6 +266,7 @@ int main() {
 					}
 					asteroids[j].position.x = 1500.f;
 					asteroids[j].speed = 0.f;
+				
 				}
 					
 			}
@@ -269,8 +281,10 @@ int main() {
 		}
 
 		for (int i = 0; i < asteroids.size(); ++i) {
-			asteroids[i].generate(&window);
-			asteroids[i].update(dt.asSeconds());
+			if (asteroids[i].active) {
+				asteroids[i].generate(&window);
+				asteroids[i].update(dt.asSeconds());
+			}
 		}
 
 		for (int i = 0; i < mediumasteroids.size(); ++i) {

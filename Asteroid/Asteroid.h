@@ -21,7 +21,8 @@ public:
 	float speed;
 	Vector2f direction;
 	Vector2f position;
-	
+	bool active = true
+;
 	Color color = Color(255,255,255);
 	Asteroid(Vector2f position,float radius, float speed, Vector2f direction) {
 		this->direction = direction;
