@@ -94,6 +94,12 @@ bool checkCollsion(Asteroid& ball, Bullet & bullet) {
 	return false;
 }
 
+bool checkballcollsion(Asteroid& ball1, Asteroid& ball2) {
+	if (sqrtf((ball1.position.x - ball2.position.x) * (ball1.position.x - ball2.position.x) + (ball1.position.y - ball2.position.y) * (ball1.position.y - ball2.position.y)) < (ball1.radius + ball2.radius)) {
+		return true;
+	}
+}
+
 Vector2f normalize(Vector2f vector) {
 	Vector2f result;
 	result = Vector2f(vector.x / sqrt(vector.x * vector.x + vector.y * vector.y), vector.y / sqrt(vector.x * vector.x + vector.y * vector.y));
@@ -101,7 +107,30 @@ Vector2f normalize(Vector2f vector) {
 
 }
 
+
+
 int main() {
+	// create bucket grids 
+
+	vector<vector<Asteroid>> grids;//use a vector2f to show the basic grid range 
+
+	for (int i = 0; i <= 720; ) {
+		for (int j = 0; j <= 540;) {		
+			grids.push_back(vector<Asteroid>());
+			j = j + 60;			
+		}
+
+		i = i + 80;
+
+	}
+
+	
+
+	/*for (int i = 0; i < grids.size(); i++) {
+		cout << grids[i].x << grids[i].y << endl;
+	}*/
+
+
 	RenderWindow window(VideoMode(800, 600), "Asteroid");
 	Clock clock;
 	Clock cooldown;
@@ -164,17 +193,65 @@ int main() {
 		
 		}
 		
-		// handle collsion
+		// handle collsion within asteroids
+		//distribute asteroids into grids
+		for (vector<Asteroid>::iterator iter = asteroids.begin(); iter != asteroids.end(); iter++ ) {
+			for (int i = 0; i < grids.size(); i++) {
+				if (iter->position.x <  i/10 * 80.f + 80.f &&
+					iter->position.x > i/10 * 80.f &&
+					iter->position.y > i % 10 * 60.f&&
+					iter->position.y < i % 10 * 60.f + 60.f)
+				{
+					
+					grids[i].push_back(*iter);
+					
+				}
+			}
+		}
+
+		for (int i = 0; i < grids.size(); i++) {
+			for (auto j = grids[i].begin(); j != grids[i].end();) {
+				for(auto m = j + 1; m != grids[i].end();)
+				if (checkballcollsion(*j, *m)) {
+					for (int n = 0; n < 3; ++n) //create medium Asteroid
+					{
+						MediumAsteroid ma;
+						ma.position = j->position;
+						ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
+						mediumasteroids.push_back(ma);
+					}
+					j = grids[i].erase(j);
+				
+					for (int n = 0; n < 3; ++n) //create medium Asteroid
+					{
+						MediumAsteroid ma;
+						ma.position = m->position;
+						ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
+						mediumasteroids.push_back(ma);
+					}
+					m = grids[i].erase(m);
+
+				}
+
+				else {
+					m++;
+				}
+				j++;
+				
+			}
+		}
+
+		// handle collsion between bullets and asteroids
 		for (int i = 0; i < bullets.size(); i++) {
 			for (int j = 0; j < asteroids.size(); j++ ) {
 				if (checkCollsion(asteroids[j], bullets[i])) {
 					
 					for(int i = 0; i < 3; ++i) //create medium Asteroid
 					{
-						MediumAsteroid m;
-						m.position = asteroids[j].position;
-						m.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
-						mediumasteroids.push_back(m);
+						MediumAsteroid ma;
+						ma.position = asteroids[j].position;
+						ma.direction = normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX)));
+						mediumasteroids.push_back(ma);
 					}
 					asteroids[j].position.x = 1500.f;
 					asteroids[j].speed = 0.f;

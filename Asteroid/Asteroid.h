@@ -21,6 +21,7 @@ public:
 	float speed;
 	Vector2f direction;
 	Vector2f position;
+	
 	Color color = Color(255,255,255);
 	Asteroid(Vector2f position,float radius, float speed, Vector2f direction) {
 		this->direction = direction;
@@ -64,3 +65,8 @@ public:
 
 };
 
+class SmallAsteroid : public Asteroid {
+public:
+	SmallAsteroid() :Asteroid(Vector2f(), 12.5f, 300.f, Vector2f()) {}
+
+};
