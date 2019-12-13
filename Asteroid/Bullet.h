@@ -9,25 +9,29 @@
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include "GameObject.h"
 using namespace sf;
 using namespace std;
-class Bullet
-{
+
+
+class Bullet: public GameObject{
 public:
 	float speed;
-	Vector2f direction;
-	Vector2f position;
-	Vector2f size = Vector2f(2.f, 1.f);
+	
+
 	Bullet(float speed) {
+		radius = 2.f;
 		this->speed = speed;
+		kind = 2;
 
 	}
 	~Bullet() {};
 
 	void generate(RenderWindow* window) {
-		RectangleShape bullet;
+		
+		CircleShape bullet;
 		bullet.setPosition(this->position);
-		bullet.setSize(this->size);
+		bullet.setRadius(this->radius);
 		bullet.setFillColor(Color(255,255,255));
 		window->draw(bullet);
 	}
@@ -38,9 +42,7 @@ public:
 		this->direction.y = sin(this->rotation);*/
 		this->position.x += this->speed * this->direction.x * dt_ms;
 		this->position.y += this->speed * this->direction.y * dt_ms;
-		if (this->position.x < 0 || this->position.x > 800) {
-			this->~Bullet();
-		}
+		
 	}
 };
 

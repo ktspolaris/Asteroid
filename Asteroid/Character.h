@@ -9,19 +9,20 @@
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include "GameObject.h"
 using namespace sf;
 using namespace std;
-class Character
+class Character:public GameObject
 {
 public:
 	float radius;
 	Texture texture;
 	float speed;
-	Vector2f direction;
-	Vector2f position;
+
 	Color color = Color(255,0,0);
 	double rotation = 0;
 	Character(Vector2f position, float radius, float speed, Vector2f direction) {
+		kind = 1;
 		texture.loadFromFile("Player1.png");
 		this->direction = direction;
 		this->radius = radius;

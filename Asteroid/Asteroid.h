@@ -9,22 +9,22 @@
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include "GameObject.h"
 using namespace sf;
 using namespace std;
 
 
-class Asteroid
+class Asteroid:public GameObject
 {
 public:
-	float radius;
+
 	Texture texture;
 	float speed;
-	Vector2f direction;
-	Vector2f position;
-	bool active = true
-;
+	bool active = true;
+
 	Color color = Color(255,255,255);
 	Asteroid(Vector2f position,float radius, float speed, Vector2f direction) {
+		kind = 3;
 		this->direction = direction;
 		this->radius = radius;
 		this->speed = speed;
@@ -44,18 +44,22 @@ public:
 	{
 		this->position.x += this->speed * this->direction.x * dt_ms;
 		this->position.y += this->speed * this->direction.y * dt_ms;
-		if (this->position.x < 0) {
-			this->position.x = 800.f;
+		if (this->position.x < 0 - this->radius) {
+			this->position.x = 800.f + this->radius;
 		}
-		if (this->position.y < 0) {
-			this->position.y = 600.f;
+		if (this->position.y < 0 - this->radius) {
+			this->position.y = 600.f + this->radius;
 		}
-		if (this->position.x > 800.f && this->position.x < 1000) {
-			this->position.x = 0.f;
+		if (this->position.x > 800.f + this->radius && this->position.x < 1000) {
+			this->position.x = 0.f - this->radius;
 		}
-		if (this->position.y > 600.f) {
-			this->position.y = 0.f;
+		if (this->position.y > 600.f + this->radius) {
+			this->position.y = 0.f - this->radius;
 		}
+	}
+
+	bool Isalive() {
+	
 	}
 
 };
