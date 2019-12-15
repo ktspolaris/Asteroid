@@ -18,8 +18,10 @@ public:
 	Vector2f direction;
 	float radius;
 	int kind;
+	
 	GameObject* lasthit;
-	void generate() {};
-	void update() {};
+	void generate() {}
+	~GameObject() {};
+	void update() {}
 };
 

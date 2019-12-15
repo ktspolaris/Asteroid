@@ -42,6 +42,18 @@ public:
 		this->direction.y = sin(this->rotation);*/
 		this->position.x += this->speed * this->direction.x * dt_ms;
 		this->position.y += this->speed * this->direction.y * dt_ms;
+		if (this->position.x < 0 - this->radius && this->position.x > -50.f) {
+			this->position.x = 800.f + this->radius;
+		}
+		if (this->position.y < 0 - this->radius) {
+			this->position.y = 600.f + this->radius;
+		}
+		if (this->position.x > 800.f + this->radius && this->position.x < 1000) {
+			this->position.x = 0.f - this->radius;
+		}
+		if (this->position.y > 600.f + this->radius) {
+			this->position.y = 0.f - this->radius;
+		}
 		
 	}
 };

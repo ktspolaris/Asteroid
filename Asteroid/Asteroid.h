@@ -19,11 +19,13 @@ class Asteroid:public GameObject
 public:
 
 	Texture texture;
+
 	float speed;
 	bool active = true;
 
 	Color color = Color(255,255,255);
 	Asteroid(Vector2f position,float radius, float speed, Vector2f direction) {
+		texture.loadFromFile("Asteroid.png");
 		kind = 3;
 		this->direction = direction;
 		this->radius = radius;
@@ -32,10 +34,10 @@ public:
 	};
 	void generate(RenderWindow* window) {
 
-		CircleShape ball(this->radius);
+		Sprite ball;
 		ball.setPosition(this->position);
 		ball.setOrigin(this->radius, this->radius);
-		ball.setFillColor(this->color);
+		ball.setTexture(this->texture);
 		window->draw(ball);
 	}
 	~Asteroid() {};
@@ -62,16 +64,27 @@ public:
 	
 	}
 
+	void explosion(Sprite explosion) {
+		
+		explosion.setPosition(this->position);
+
+	}
+
 };
 
 class MediumAsteroid : public Asteroid {
 public:
-	MediumAsteroid() :Asteroid(Vector2f(), 25.f, 300.f,Vector2f()) {}
+	MediumAsteroid() :Asteroid(Vector2f(), 25.f, 300.f,Vector2f()) {
+		texture.loadFromFile("MediumAsteroid.png");
+	}
 
 };
 
 class SmallAsteroid : public Asteroid {
 public:
-	SmallAsteroid() :Asteroid(Vector2f(), 12.5f, 300.f, Vector2f()) {}
+	SmallAsteroid() :Asteroid(Vector2f(), 13.f, 300.f, Vector2f()) {
+		texture.loadFromFile("SmallAsteroid.png");
+
+	}
 
 };
