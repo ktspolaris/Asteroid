@@ -211,12 +211,12 @@ int main() {
 	int lifes = 3;
 	int scores = 0;
 	srand(time(0));
-	for (int i = 0; i < 4; ++i) {
+	//for (int i = 0; i < 4; ++i) {
 
-		Asteroid a(Vector2f(rand()%800, rand()%600), 40.f, initialspeed, normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX))) );
+		//Asteroid a(Vector2f(rand()%800, rand()%600), 40.f, initialspeed, normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX))) );
 	
-		asteroids.push_back(a);
-	}
+		//asteroids.push_back(a);
+	//}
 	enum gamestate{ mainmenu, isplay, gameover };
 	gamestate currentstate = mainmenu;
     vector<Bullet> bullets;
@@ -238,12 +238,16 @@ int main() {
 				window.close();
 			}
 			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Enter) && currentstate == mainmenu) {
+				mediumasteroids.clear();
+				smallasteroids.clear();
+				asteroids.clear();
 				enemy.position = Vector2f(-100.f, 10.f);
 				enemy.speed = 0.f;
 				Enemyclock.restart();
 				lifes = 3;
-				for (int i = 0; i < 1; ++i) {
-
+				scores = 0;
+				for (int i = 0; i < 4; ++i) {
+					
 					Asteroid a(Vector2f(rand() % 800, rand() % 600), 40.f, initialspeed, normalize(Vector2f(rand() / double(RAND_MAX), rand() / double(RAND_MAX))));
 
 					asteroids.push_back(a);
@@ -798,7 +802,7 @@ int main() {
 				   }
 
 				   if (lifes == 0) {
-					 //  asteroids.clear();
+					//asteroids.clear();
 					   bullets.clear();
 					   enemybullets.clear();
 					  // smallasteroids.clear();
